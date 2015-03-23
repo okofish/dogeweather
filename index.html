@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>DogeWeather</title>
+    <meta name="viewport" content="width=700">
+    <link rel="stylesheet" href="css/app.css" type="text/css">
+    <script>
+      var gui = require('nw.gui');
+      
+      // make sure document title is correct for all y'all whitelablers out there
+      document.title = gui.App.manifest.name;
+    
+      var mb = new gui.Menu({type:"menubar"});
+      mb.createMacBuiltin(gui.App.manifest.name);
+      gui.Window.get().menu = mb;
+    
+      window.onerror = function(msg, url, line, col, error) {
+        // thanks to http://stackoverflow.com/questions/951791/javascript-global-error-handling
+        var extra = !col ? '' : '\ncolumn: ' + col;
+        extra += !error ? '' : '\nerror: ' + error;
+        alert("Error: " + msg + "\nurl: " + url + "\nline: " + line + extra);
+        var suppressErrorAlert = true;
+        return suppressErrorAlert;
+      };
+      
+      var request = require('request');
+    </script>
+  </head>
+  <body class="bg">
+    <div class="container">
+        <div class="doge-image"></div>
+        <div id="all-weather">
+            <div id="weather-desc"></div>
+            <div id="location"></div>
+            <div class="t" id="degreesCelsius"> <span class="number"></span><span class="cel"></span></div>
+            <div class="t" id="degreesFahrenheit"></div>
+        </div>
+    </div>
+    <div id="identifiers">
+        <div id="weather-id"></div>
+        <div id="weather-icon"> </div>
+    </div>
+    <div class="exit"> <a href="#" onclick="gui.App.quit()">pls to exit</a>
+    </div>
+    <div class="ourinfo"> wow <a href="#" onclick="gui.Shell.openExternal('https://github.com/okofish/dogeweather')">github</a><br>
+      very made by <a href="#" onclick="gui.Shell.openExternal('https://twitter.com/KatiaEirin')">Katia</a> &amp; <a href="#" onclick="gui.Shell.openExternal('https://twitter.com/ennsu')">Bennett</a><br>
+      much desktop app by <a href="#" onclick="gui.Shell.openExternal('http://jesse.ws')">Jesse</a><br>
+    </div>
+    
+    <script src="js/vendor/jquery-1.9.0.min.js"></script>
+    <script src="js/jquery.dogeweather.js"></script>
+    <script>
+     // fyi, i tried to make this code's flow match the original dogeweather's as closely as possible
+
+     // openweathermap api key
+    var owmapi = "80ec1578210e6b8cdb76cd7b0b6a3a8e"
+
+    request('http://ip-api.com/json', function(error, response, body) { // if this service ever stops working, feel free to submit a pull request with an alternative
+      if (!error && response.statusCode == 200) {
+        json = JSON.parse(body)
+        var lat = json.lat
+        var lon = json.lon
+        var city = json.city
+        var url = "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&APPID=" + owmapi
+        //var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city
+      } else {
+        var url = "http://api.openweathermap.org/data/2.5/weather?q=Paris"
+      }
+      request(url, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var data = JSON.parse(body)
+
+            // everything from here down to the else throwing an error was not written by me (jesse)
+            //set weather id & icon 
+            var id = data.weather[0].id;
+            var icon = data.weather[0].icon;
+
+            $('#weather-id').text(id); $('#weather-icon').text(icon);
+
+            //TESTING 
+            //icon = "01n";
+            //change such doge and sky based on much icon
+            var doge_img = "url(img/doge/" + icon + ".png)"; $('.doge-image').css('background-image', doge_img);
+
+            var sky_img = "url(img/sky-img/" + icon + ".png)"; $('.bg').css('background-image', sky_img);
+
+
+            //get weather description
+            var tempCelcius = data.main.temp - 273.15;
+            var tempFahrenheit = tempCelcius * 9 / 5 + 32;
+            var description = data.weather[0].description;
+
+            $('#weather-desc').text("wow " + description); $('#location').text(city);
+
+            $('#degreesCelsius .number').text(Math.round(tempCelcius)); $('#degreesCelsius .cel').text("°C "); $('#degreesFahrenheit').text(Math.round(tempFahrenheit) + "°F");
+
+            $(".suchlikes").show(); $(".ourinfo").show();
+
+            //initialise such doge
+            $($.doge);
+        } else {
+          throw new Error("openweathermap error: " + error);
+        }
+      })
+    })
+    </script>
+  </body>
+</html>

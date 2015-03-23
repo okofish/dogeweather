@@ -1,0 +1,44 @@
+{
+    "description": "very weather",
+    "keywords": [
+        "very weather",
+        "so forecast"
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://raw.githubusercontent.com/okofish/dogeweather/master/LICENSE"
+        }
+    ],
+    "main": "index.html",
+    "maintainers": [
+        {
+            "email": "jesse@jesse.ws",
+            "name": "Jesse Friedman",
+            "web": "http://jesse.ws"
+        }
+    ],
+    "name": "dogeweather",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/okofish/dogeweather.git"
+        }
+    ],
+    "version": "0.1.0",
+    "window": {
+        "frame": false,
+        "height": 700,
+        "icon": "link.png",
+        "max_height": 700,
+        "max_width": 700,
+        "min_height": 700,
+        "min_width": 700,
+        "position": "center",
+        "resizable": false,
+        "title": "DogeWeather",
+        "toolbar": false,
+        "transparent": true,
+        "width": 700
+    }
+}
