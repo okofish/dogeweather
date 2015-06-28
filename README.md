@@ -1,4 +1,9 @@
 # dogeweather
+
+##### NOTE: I stopped updated this repo when I started working on releasing DogeWeather to the Mac App Store, partially because I'm lazy and partially because I need the money :/
+
+###### If you really want a copy of the source code, shoot me an email.
+
 ### wow
 An [nw.js](https://github.com/nwjs/nw.js)-packaged version of [katiaeirin/dogeweather](https://github.com/katiaeirin/dogeweather)
 
